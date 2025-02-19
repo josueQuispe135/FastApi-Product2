@@ -6,6 +6,7 @@ from app.db import create_db_and_tables
 
 from app.task import routers as Task
 from app.product import routers as Product
+from app.customer import routers as Customer
 app = FastAPI()
 
 version = "v1"
@@ -48,7 +49,7 @@ app = FastAPI(
 )
 app.include_router(Task.router, prefix="/tasks", tags=["Tasks"])
 app.include_router(Product.router, prefix="/products", tags=["Products"])
-
+app.include_router(Customer.router, prefix="/customers", tags=["Customers"])
 
 
 @app.get("/", response_class=HTMLResponse)

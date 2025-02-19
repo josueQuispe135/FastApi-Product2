@@ -2,14 +2,14 @@ from fastapi import HTTPException, status
 from sqlmodel import select
 
 from app.db import SessionDep
-
 from app.product.models import Product
 from app.product.schemas import ProductCreate, ProductUpdate
 
 
 
+
 class ProductService:
-    no_task:str = "Task doesn't exits"
+    no_product:str = "Product doesn't exits"
     # CREATE
     # ----------------------
     def create_product(self, plan_data: ProductCreate, session: SessionDep):
@@ -21,11 +21,11 @@ class ProductService:
 
     # GET ONE
     # ----------------------
-    def get_task(self, plan_id: int, session: SessionDep):
+    def get_product(self, plan_id: int, session: SessionDep):
         product_db = session.get(Product, plan_id)
         if not product_db:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail=self.no_task
+                status_code=status.HTTP_404_NOT_FOUND, detail=self.no_product
             )
         return product_db
 
@@ -35,7 +35,7 @@ class ProductService:
         product_db = session.get(Product, plan_id)
         if not product_db:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail=self.no_task
+                status_code=status.HTTP_404_NOT_FOUND, detail=self.no_product
             )
         plan_data_dict = plan_data.model_dump(exclude_unset=True)
         product_db.sqlmodel_update(plan_data_dict)
@@ -46,18 +46,18 @@ class ProductService:
 
     # GET ALL PLANS
     # ----------------------
-    def get_product(self, session: SessionDep):
+    def get_products(self, session: SessionDep):
         return session.exec(select(Product)).all()
 
     # DELETE
     # ----------------------
     def delete_product(self, plan_id: int, session: SessionDep):
-        task_db = session.get(Product, plan_id)
-        if not task_db:
+        product_db = session.get(Product, plan_id)
+        if not product_db:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail=self.no_task
+                status_code=status.HTTP_404_NOT_FOUND, detail=self.no_product
             )
-        session.delete(task_db)
+        session.delete(product_db)
         session.commit()
         print("debería salir el mensaje")
         return {"detail": "ok"}

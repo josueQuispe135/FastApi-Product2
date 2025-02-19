@@ -4,11 +4,11 @@ from typing import Optional
 from sqlalchemy import Column, DateTime, func
 from sqlmodel import Field, SQLModel
 
-class Product(SQLModel, table=True):
+class Customer(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     name: str = Field(default=None)
-    description: str | None = Field(default=None)
-    price: int = 0
+    city: str | None = Field(default=None)
+    age: int = 0
     created_at: Optional[datetime] = Field(
         default=None,
         sa_column=Column(

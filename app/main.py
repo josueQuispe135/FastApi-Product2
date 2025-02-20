@@ -2,6 +2,7 @@ import os
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
+from fastapi.middleware.cors import CORSMiddleware
 from app.db import create_db_and_tables
 
 from app.task import routers as Task
@@ -52,6 +53,15 @@ app = FastAPI(
         }
     ],
 )
+# Habilitar CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[""],  # Prueba con "" temporalmente
+    allow_credentials=True,
+    allow_methods=["*"],  # Permitir todos los métodos
+    allow_headers=["*"],  # Permitir todos los encabezados
+)
+
 app.include_router(Task.router, prefix="/tasks", tags=["Tasks"])
 app.include_router(Product.router, prefix="/products", tags=["Products"])
 app.include_router(Customer.router, prefix="/customers", tags=["Customers"])
